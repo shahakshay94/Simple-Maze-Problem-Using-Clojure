@@ -1,4 +1,4 @@
-(ns maze)
+(ns treasure)
 
 ;; reference link for the macro
 ;; https://stackoverflow.com/a/10056715
@@ -13,8 +13,6 @@
 (def maze_array)
 (def maze_row 0)
 (def maze_col 0)
-(def start_row 0)
-(def start_col 0)
 (def end_row 0)
 (def end_col 0)
 (def solution_exist)
@@ -77,9 +75,16 @@
     ( do (def solution_exist false)))
   )
 
+(defn end-the-recursion []
+
+  (println "Woo hoo, I found the treasure :-)")
+  (print-maze-array maze_array)
+  (System/exit 0)
+  )
+
 (defn solve-maze-using-backtracking [maze_array row col]
   (if (and (= row end_row) (= col end_col))
-    (do (def solution_exist true)))
+    (do (def solution_exist true) (end-the-recursion)))
 
   (is-safe maze_array row col)
   (if (= true solution_exist)
@@ -92,7 +97,9 @@
     (do
 
       (aset maze_array col  row (char (first (.getBytes "+"))));; marking the step as a solution in the path
-
+      ;;(println "The path drawing at every point\n")
+      ;;(print-maze-array maze_array)
+      ;;(println "\n")
       (solve-maze-using-backtracking maze_array (- row 1) col)
       (if (= true solution_exist) (do (def solution_exist true)));;moving up
 
@@ -128,10 +135,27 @@
   )
 
 
+(defn check-map-valid-syntax [maze_vector]
+  (def map-valid true)
+  (def first-row-length (count (nth maze_vector 0)))
+  (for-loop [i 0 (< i (count maze_vector)) (inc i)]
+            (def temp (count (nth maze_vector i)))
+            (if (= temp first-row-length)
+              (do (print ""))
+              (do (println "Map Invalid") (System/exit 1))
+
+
+              )
+
+
+  )
+)
+
 (defn start []
-  (def maze_vector (readfile "/Users/akshay.shaz/Desktop/Study/Concordia/COMP6411/RISK_GAME/untitled1/src/map.txt"))
+  (def maze_vector (readfile "map.txt"))
   (calculate_maze_row maze_vector)
   (calculate_maze_col maze_vector)
+  (check-map-valid-syntax maze_vector)
   (def maze_array (make-array Character/TYPE maze_col maze_row))
 
   (initialise-maze-array-with-values maze_vector)
