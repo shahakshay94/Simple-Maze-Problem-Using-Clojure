@@ -89,66 +89,35 @@
 
 
 
-    (do (aset maze_array col  row (char (first (.getBytes "+"))))) ;; marking the step as a solution in the path
-
-
-    ;;moving up
     (do
 
-        (solve-maze-using-backtracking maze_array (- row 1) col)
-        (if (= true solution_exist) (do (def solution_exist true)))
+      (aset maze_array col  row (char (first (.getBytes "+"))));; marking the step as a solution in the path
 
-
-
-
-    )
-
-
-    ;;moving down
-    (do
+      (solve-maze-using-backtracking maze_array (- row 1) col)
+      (if (= true solution_exist) (do (def solution_exist true)));;moving up
 
 
       (solve-maze-using-backtracking maze_array (+ row 1) col)
-      (if (= true solution_exist) (do (def solution_exist true)))
+      (if (= true solution_exist) (do (def solution_exist true))) ;;moving down
 
-
-     )
-
-
-
-
-    ;;moving right
-    (do
 
       (solve-maze-using-backtracking maze_array row (+ col 1))
-      (if (= true solution_exist) (do (def solution_exist true)))
+      (if (= true solution_exist) (do (def solution_exist true)))  ;;moving right
 
-
-
-
-    )
-
-
-
-    ;;moving left
-    (do
 
       (solve-maze-using-backtracking maze_array row (- col 1))
-      (if (= true solution_exist) (do (def solution_exist true)))
+      (if (= true solution_exist) (do (def solution_exist true)))  ;;moving left
 
 
 
-     )
-
-
-    ;; if all the four direction are not possible then backtrack
-    ;; and mark the path as not a part of the solution
-    (aset maze_array col  row (char (first (.getBytes "!"))))
-    (def solution_exist false)
+      ;; if all the four direction are not possible then backtrack
+      ;; and mark the path as not a part of the solution
+      (aset maze_array col  row (char (first (.getBytes "!"))))
+      (def solution_exist false)
 
     )
-
   )
+)
 
 (defn solve_maze [maze_array]
   (solve-maze-using-backtracking maze_array 0 0)
